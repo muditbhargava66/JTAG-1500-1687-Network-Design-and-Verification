@@ -1,0 +1,34 @@
+-- JTAG Controller Boundary-Scan Description Language (BSDL) File
+-- This file describes the boundary-scan features of the JTAG controller.
+
+entity JTAG_CONTROLLER is
+    generic (
+        -- Insert any generics here
+    );
+    port (
+        TCK : in  bit;  -- Test Clock
+        TMS : in  bit;  -- Test Mode Select
+        TDI : in  bit;  -- Test Data In
+        TDO : out bit   -- Test Data Out
+    );
+    attribute COMPONENT_CONFORMANCE of JTAG_CONTROLLER : entity is "STD_1149_1_1993";
+    attribute PIN_MAP of JTAG_CONTROLLER : entity is PHYSICAL_PIN_MAP;
+
+    constant PHYSICAL_PIN_MAP : PIN_MAP_STRING :=
+        "TCK: 1, " &
+        "TMS: 2, " &
+        "TDI: 3, " &
+        "TDO: 4";
+
+    attribute TAP_SCAN_IN of TDI : signal is TRUE;
+    attribute TAP_SCAN_OUT of TDO : signal is TRUE;
+    attribute TAP_SCAN_CLOCK of TCK : signal is (1.0e6, HIGH);
+    attribute TAP_SCAN_MODE of TMS : signal is TRUE;
+
+    attribute BOUNDARY_SCAN_REGISTER of JTAG_CONTROLLER : entity is
+        "0 (BC_1, TDI, input, X), " &
+        "1 (BC_1, TDO, output3, X, 0, 0, Z), " &
+        "2 (BC_1, TCK, input, X), " &
+        "3 (BC_1, TMS, input, X)";
+
+end JTAG_CONTROLLER;

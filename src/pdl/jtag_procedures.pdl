@@ -1,0 +1,56 @@
+-- JTAG Procedures PDL (Procedural Description Language) File
+-- This file describes the procedural descriptions and operations for the JTAG controller.
+
+Procedure JTAG_Startup {
+    Action {
+        // Reset the TAP controller
+        TMS = 1;
+        Repeat(5) {
+            TCK = 0;
+            TCK = 1;
+        }
+    }
+}
+
+Procedure JTAG_Shift_IR {
+    Action {
+        // Enter IR shift mode
+        TMS = 1; TCK = 0; TCK = 1;  // Select-DR
+        TMS = 1; TCK = 0; TCK = 1;  // Select-IR
+        TMS = 0; TCK = 0; TCK = 1;  // Capture-IR
+        TMS = 0; TCK = 0; TCK = 1;  // Shift-IR
+    }
+}
+
+Procedure JTAG_Shift_DR {
+    Action {
+        // Enter DR shift mode
+        TMS = 1; TCK = 0; TCK = 1;  // Select-DR
+        TMS = 0; TCK = 0; TCK = 1;  // Capture-DR
+        TMS = 0; TCK = 0; TCK = 1;  // Shift-DR
+    }
+}
+
+Procedure JTAG_Exit_Shift {
+    Action {
+        // Exit shift mode
+        TMS = 1; TCK = 0; TCK = 1;  // Exit1-DR or Exit1-IR
+        TMS = 1; TCK = 0; TCK = 1;  // Update-DR or Update-IR
+        TMS = 0; TCK = 0; TCK = 1;  // Run-Test/Idle
+    }
+}
+
+Procedure JTAG_Shift_Data (
+    In bit [8] data_in, 
+    Out bit [8] data_out
+) {
+    Action {
+        // Shift data through the scan chain
+        foreach(data_in[i]) {
+            TDI = data_in[i];
+            TCK = 0;
+            TCK = 1;
+            data_out[i] = TDO;
+        }
+    }
+}

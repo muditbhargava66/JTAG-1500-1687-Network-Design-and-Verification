@@ -154,9 +154,54 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
+# Verilog/RTL
+*.vvp
+*.vcd
+*.log
+*.out
+
+# Synthesis and Implementation
+synth/
+impl/
+yosys.log
+yosys.json
+
+# Simulation results
+results/simulation/
+results/synthesis/
+results/coverage/
+obj_dir/
+
+# Vivado specific files
+*.jou
+*.log
+*.str
+*.wdb
+*.drc
+*.rpt
+*.xml
+*.xpr
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.runs/
+*.srcs/
+*.data/
+webtalk/
+vivado*.jou
+vivado*.log
+
+# GTKWave files
+*.gtkw
+*.vcd
+
+# Backup and temporary files
+*~
+*.bak
+*.swp
+*.swo
+.DS_Store
+
+# JetBrains specific template (PyCharm, IntelliJ)
+.idea/
