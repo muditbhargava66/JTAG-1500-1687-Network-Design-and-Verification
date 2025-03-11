@@ -166,10 +166,28 @@ impl/
 yosys.log
 yosys.json
 
-# Simulation results
-results/simulation/
-results/synthesis/
-results/coverage/
+### Simulation and results directories ###
+# Exclude content but keep directory structure
+results/simulation/*
+!results/simulation/.gitkeep
+!results/simulation/waveforms/
+results/simulation/waveforms/*
+!results/simulation/waveforms/.gitkeep
+!results/simulation/logs/
+results/simulation/logs/*
+!results/simulation/logs/.gitkeep
+
+results/synthesis/*
+!results/synthesis/.gitkeep
+!results/synthesis/reports/
+results/synthesis/reports/*
+!results/synthesis/reports/.gitkeep
+
+results/coverage/*
+!results/coverage/.gitkeep
+!results/coverage/reports/
+results/coverage/reports/*
+!results/coverage/reports/.gitkeep
 obj_dir/
 
 # Vivado specific files

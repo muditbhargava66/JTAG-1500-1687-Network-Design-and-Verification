@@ -74,7 +74,7 @@ module tb_top_module;
         bsc_control[2] = 0;
         bsc_control[0] = 1;
         repeat (8) begin
-            tdi = $random & 1'b1;  // Fix width truncation warning
+            tdi = ($random % 2) == 1; // Generate either 0 or 1
             @(posedge tck);
         end
         bsc_control[0] = 0;

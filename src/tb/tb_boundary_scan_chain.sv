@@ -40,7 +40,7 @@ module tb_boundary_scan_chain;
         // Shift data through the scan chain
         control[0] = 1;
         repeat (8) begin
-            tdi = $random & 1'b1;  // Fix width truncation warning
+            tdi = ($random % 2) == 1; // Generate either 0 or 1
             @(posedge tck);  // Use --timing or --no-timing to specify how event controls should be handled
         end
         control[0] = 0;
