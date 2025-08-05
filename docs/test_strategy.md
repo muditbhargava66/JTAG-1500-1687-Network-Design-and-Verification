@@ -2,84 +2,168 @@
 
 ## Overview
 
-The test strategy outlines the approach to be taken for testing the JTAG/1500/1687 network design. It covers the types of testing to be performed, the tools to be used, and the methodologies to be followed to ensure a robust and reliable design.
+This test strategy outlines the approach for testing the JTAG/1500/1687 Network design. It covers various testing methods, tools, and procedures to ensure the design meets all specifications and standards requirements.
 
 ## Test Types
 
-1. **Functional Testing**:
-   - Verify that the design meets all specified functional requirements.
-   - Use directed and random test cases to cover various scenarios.
+### Functional Testing
+- **Unit Testing**: Verify individual modules in isolation
+  - JTAG controller state machine and instruction handling
+  - Boundary scan chain shift and capture operations
+  - IEEE 1500 wrapper instruction and data register functions
+  - IEEE 1687 network SIB operation and instrument access
 
-2. **Integration Testing**:
-   - Verify the interaction between integrated modules.
-   - Ensure that the integrated system operates correctly as a whole.
+- **Integration Testing**: Verify interaction between modules
+  - JTAG and boundary scan chain integration
+  - JTAG and IEEE 1500 wrapper integration
+  - JTAG and IEEE 1687 network integration
+  - Complete system integration in top module
 
-3. **Regression Testing**:
-   - Perform regression tests to ensure that new changes do not introduce errors.
-   - Use automated test scripts to run regression tests regularly.
+- **Standards Compliance Testing**: Verify adherence to IEEE standards
+  - IEEE 1149.1 (JTAG) protocol compliance
+  - IEEE 1500 wrapper interface compliance
+  - IEEE 1687 network access protocol compliance
 
-4. **Performance Testing**:
-   - Measure the performance of the design (latency, throughput).
-   - Optimize the design to meet performance requirements.
+### Performance Testing
+- **Clock Frequency Verification**: Validate operation at different clock rates
+- **Latency Measurement**: Verify scan chain access time
+- **Power Analysis**: Measure power consumption during test operations
 
-5. **Coverage Analysis**:
-   - Use coverage tools to ensure high code and functional coverage.
-   - Identify any untested paths and create additional test cases as needed.
+### Timing Analysis
+- **Setup and Hold Time Verification**: Ensure timing requirements are met
+- **Clock Domain Crossing**: Verify proper synchronization
+- **Critical Path Analysis**: Identify and optimize critical paths
 
-## Tools and Environments
+### Coverage Analysis
+- **Code Coverage**: Ensure all code is exercised
+  - Line coverage
+  - Branch coverage
+  - Toggle coverage
+  - FSM coverage (especially for JTAG state machine)
 
-1. **Simulation**:
-   - Use Icarus Verilog and Vivado for functional simulation.
-   - Verify the design under various test scenarios and conditions.
-
-2. **Synthesis**:
-   - Use Yosys and Vivado for synthesizing the design.
-   - Verify the synthesized design against timing and resource constraints.
-
-3. **Coverage Analysis**:
-   - Use Verilator and Vivado for coverage analysis.
-   - Ensure that all functional paths are tested and covered.
+- **Functional Coverage**: Verify all features are tested
+  - State transitions coverage
+  - Instruction coverage
+  - Test mode coverage
+  - Configuration coverage
 
 ## Test Methodologies
 
-1. **Directed Testing**:
-   - Create directed test cases to verify specific functionalities and scenarios.
-   - Ensure that all functional requirements are covered.
+### Directed Testing
+- **State Machine Testing**: Exhaustive testing of the JTAG TAP controller
+  - Verify all valid state transitions
+  - Test invalid sequences for proper error handling
+  - Verify reset functionality from any state
 
-2. **Random Testing**:
-   - Use random test case generation to cover a wide range of scenarios.
-   - Identify any corner cases or unexpected behaviors.
+- **Instruction Testing**: Verify operation of all defined instructions
+  - Standard instructions (BYPASS, IDCODE, EXTEST, etc.)
+  - Custom instructions for IEEE 1500 and IEEE 1687 access
 
-3. **Automated Testing**:
-   - Use automated test scripts to run tests regularly.
-   - Integrate automated testing with continuous integration (CI) pipelines.
+- **Scan Chain Testing**: Verify boundary scan operations
+  - Pattern shifting through scan chains
+  - Parallel capture and update operations
+  - Test different data patterns (all zeros, all ones, alternating, etc.)
 
-4. **Manual Testing**:
-   - Perform manual testing for scenarios that are difficult to automate.
-   - Use manual testing to validate the overall system behavior.
+### Randomized Testing
+- **Random State Sequences**: Apply random TMS sequences
+- **Random Data Patterns**: Shift random data through scan chains
+- **Random Instrument Access**: Test random SIB configurations and instrument selection
 
-## Reporting
+### Automated Testing
+- **Regression Testing**: Automated test suite execution
+  - Ensure new changes don't break existing functionality
+  - Run comprehensive test suite before releases
 
-1. **Test Reports**:
-   - Generate detailed test reports after each test run.
-   - Include information on test cases, test results, and any identified issues.
+- **Continuous Integration**: Automated testing during development
+  - Run basic tests on code changes
+  - Perform nightly regression testing
 
-2. **Coverage Reports**:
-   - Generate coverage reports to highlight tested and untested paths.
-   - Use coverage reports to guide additional testing efforts.
+### Cross-Tool Verification
+- **Open-Source Tools**: Verify with Icarus Verilog, Verilator, Yosys
+- **Commercial Tools**: Verify with Vivado (if available)
+- **Compare Results**: Ensure consistent behavior across different tools
 
-## Test Metrics
+## Test Environment
 
-1. **Test Case Coverage**:
-   - Ensure that all specified functionalities are covered by test cases.
-   - Use test case coverage metrics to identify any missing tests.
+### Simulation Environment
+- **Icarus Verilog**: Open-source Verilog simulator
+  - Primary tool for functional simulation
+  - Waveform generation for analysis
 
-2. **Code Coverage**:
-   - Achieve at least 90% code coverage for all modules.
-   - Use coverage tools to measure and report code coverage.
+- **Verilator**: High-performance simulator and linter
+  - Coverage analysis and reporting
+  - Lint checking for code quality
 
-3. **Defect Metrics**:
-   - Track the number and severity of defects identified during testing.
-   - Use defect metrics to guide testing and debugging efforts.
+- **Vivado**: Commercial FPGA design suite (optional)
+  - Alternative simulation and verification
+  - Timing and power analysis
 
----
+### Waveform Analysis
+- **GTKWave**: Open-source waveform viewer
+- **Surfer**: macOS waveform viewer
+- **Vivado Waveform Viewer**: Commercial waveform viewer (if using Vivado)
+
+### Build and Automation
+- **Shell Scripts**: Individual operation automation
+  - Run simulation script
+  - Run synthesis script
+  - Run coverage analysis script
+
+- **Makefile**: Cross-platform build system
+  - Consistent interface across operating systems
+  - Module-specific and comprehensive targets
+
+## Test Coverage Goals
+
+### Code Coverage Targets
+- **Line Coverage**: 95% or higher
+- **Branch Coverage**: 90% or higher
+- **Toggle Coverage**: 85% or higher
+- **FSM Coverage**: 100% for JTAG state machine
+
+### Functional Coverage Targets
+- **JTAG States**: 100% coverage of all 16 states
+- **State Transitions**: 100% coverage of valid transitions
+- **Instructions**: 100% coverage of all defined instructions
+- **IEEE 1500 Modes**: 100% coverage of all operation modes
+- **IEEE 1687 Configurations**: Coverage of key SIB configurations
+
+## Test Reporting
+
+### Coverage Reports
+- Generate code coverage reports from Verilator
+- Create functional coverage summaries
+- Track coverage metrics over time
+
+### Test Result Reports
+- Record pass/fail status for all tests
+- Document any failures with detailed information
+- Maintain test history for regression analysis
+
+### Documentation
+- Maintain up-to-date test documentation
+- Document test cases and expected results
+- Provide waveform examples for key scenarios
+
+## Test Execution Plan
+
+### Development Testing
+- Run unit tests during module development
+- Verify basic functionality before integration
+- Focus on specific features being implemented
+
+### Integration Testing
+- Test module interactions after integration
+- Verify proper data flow between components
+- Ensure correctly multiplexed signals
+
+### Regression Testing
+- Run comprehensive test suite regularly
+- Verify all features after significant changes
+- Ensure no regressions in functionality
+
+### Release Testing
+- Complete full test suite before releases
+- Achieve coverage targets
+- Verify standards compliance
+- Document test results
