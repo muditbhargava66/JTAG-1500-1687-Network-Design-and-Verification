@@ -1,5 +1,11 @@
 `timescale 1ns / 1ps
 
+/**
+ * Simple Boundary Scan Chain Wrapper
+ * 
+ * This module provides backward compatibility with the original simple interface
+ * while using the enhanced boundary scan chain internally.
+ */
 module boundary_scan_chain (
     input wire tck,
     input wire tdi,
@@ -9,22 +15,23 @@ module boundary_scan_chain (
     output wire [7:0] data_out // parallel output data
 );
 
-    reg [7:0] scan_chain;
-    reg [7:0] parallel_out;
-
-    always @(posedge tck) begin
-        if (control[0]) begin
-            scan_chain <= {scan_chain[6:0], tdi};
-        end
-        if (control[1]) begin
-            parallel_out <= scan_chain;
-        end
-        if (control[2]) begin
-            scan_chain <= data_in;
-        end
-    end
-
-    assign tdo = scan_chain[7];
-    assign data_out = parallel_out;
+    // Enhanced boundary scan chain with simple interface mapping
+    boundary_scan_chain_enhanced #(
+        .CHAIN_LENGTH(8),
+        .CELL_WIDTH(1)
+    ) enhanced_bsc (
+        .tck(tck),
+        .tdi(tdi),
+        .tdo(tdo),
+        .control(control),
+        .reset_n(1'b1), // Always enabled for simple interface
+        .functional_data_in(data_in),
+        .functional_data_out(data_out),
+        .functional_enable(8'hFF), // All enabled
+        .test_data_in(8'h00),
+        .test_data_out(),
+        .scan_complete(),
+        .scan_status()
+    );
 
 endmodule

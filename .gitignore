@@ -223,3 +223,19 @@ vivado*.log
 
 # JetBrains specific template (PyCharm, IntelliJ)
 .idea/
+
+# Development tools (not for distribution)
+dev-tools/
+
+# Additional cleanup patterns
+*.tmp
+*.temp
+*_temp.*
+*_backup.*
+*.orig
+
+# Formal verification generated files
+formal/*/
+!formal/*.sby
+!formal/*.sv
+!formal/README.md
